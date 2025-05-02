@@ -11,8 +11,8 @@ public class C_Pick : PacketBase
     public int CharacterId { get; set; }
     
     [Key(2)]
-    public int PlayerId { get; set; }
+    public int UserId { get; set; }
     
     [Key(3)]
-    public int RoomId { get; set; }
+    public int GameRoomId { get; set; }
 }

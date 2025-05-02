@@ -5,10 +5,10 @@ namespace server.Packet;
 
 [MessagePackObject]
 [Union(0, typeof(S_Response))]
-[Union(1, typeof(AuthRequestPacket))]
+[Union(1, typeof(C_Auth))]
 [Union(2, typeof(C_Chat))]
 [Union(3, typeof(C_LobbyEnter))]
-[Union(4, typeof(MatchRequestPacket))]
+[Union(4, typeof(C_Match))]
 [Union(5, typeof(S_MatchAccept))]
 [Union(6, typeof(S_PickStart))]
 [Union(7, typeof(C_Pick))]
@@ -25,10 +25,10 @@ public abstract class PacketBase
 public enum PacketType : ushort
 {
     S_Response = 0,
-    AuthRequest = 1,
+    C_Auth = 1,
     C_Chat = 2,
     C_LobbyEnter = 3,
-    MatchRequest = 4,
+    C_Match = 4,
     S_MatchAccept = 5,
     S_PickStart = 6,
     C_Pick = 7,

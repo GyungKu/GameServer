@@ -6,6 +6,6 @@ namespace server.Packet;
 public class C_LobbyEnter : PacketBase
 {
     public override PacketType Type => PacketType.C_LobbyEnter;
-    [Key(1)] public int userId { get; set; }
+    [Key(1)] public int UserId { get; set; }
 
 }

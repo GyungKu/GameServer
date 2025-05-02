@@ -11,5 +11,5 @@ public class S_Pick : PacketBase
     public bool Success { get; set; }
     
     [Key(2)]
-    public int RoomId { get; set; }
+    public int GameRoomId { get; set; }
 }

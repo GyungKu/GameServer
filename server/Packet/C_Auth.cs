@@ -3,9 +3,9 @@
 namespace server.Packet;
 
 [MessagePackObject]
-public class AuthRequestPacket : PacketBase
+public class C_Auth : PacketBase
 {
-    public override PacketType Type => PacketType.AuthRequest;
+    public override PacketType Type => PacketType.C_Auth;
     
     [Key(1)]
     public int UserId { get; set; }

@@ -49,7 +49,7 @@ public class GameRoom
         Console.WriteLine($"Starting game: {_roomId}");
         foreach (var session in _sessions)
         {
-            session.Send(new S_PickStart { RoomId = _roomId });
+            session.Send(new S_PickStart { GameRoomId = _roomId });
         }
     }
 
@@ -59,7 +59,7 @@ public class GameRoom
         // 요청이 들어온 playerId와 세션이 갖고있는 userId가 다르거나, characterId가 전체 캐릭터수 보다 크다면 불가능 판정
         if (playerId != session.UserId || characterId >= MAX_CHARACTERS)
         {
-            session.Send(new S_Pick { Success = false, RoomId = _roomId});
+            session.Send(new S_Pick { Success = false, GameRoomId = _roomId});
             return;
         }
         
@@ -72,7 +72,7 @@ public class GameRoom
                 _teamPickedCharacters[pickPlayer.Team][characterId])
             {
                 Console.WriteLine($"[픽 실패] 방: {_roomId}, 캐릭터: {characterId}, 플레이어: {playerId}");
-                session.Send(new S_Pick { Success = false, RoomId = _roomId});
+                session.Send(new S_Pick { Success = false, GameRoomId = _roomId});
                 return;
             }
             
@@ -80,14 +80,14 @@ public class GameRoom
             _teamPickedCharacters[pickPlayer.Team].Add(characterId, true);
             pickPlayer.PickedCharacterId = characterId;
             
-            session.Send(new S_Pick { Success = true, RoomId = _roomId});
+            session.Send(new S_Pick { Success = true, GameRoomId = _roomId});
             Console.WriteLine($"[픽 성공] 방: {_roomId}, 캐릭터: {characterId}, 플레이어: {playerId}");
             
             TeamBroadCast(new S_FixedPick
             {
                 PickedCharacterId = pickPlayer.PickedCharacterId,
                 Team = pickPlayer.Team,
-                PlayerId = pickPlayer.PlayerId
+                UserId = pickPlayer.PlayerId
             });
 
             _pickedPlayers.Add(playerId);
@@ -102,7 +102,7 @@ public class GameRoom
     {
         foreach (var session in _teams[packet.Team])
         {
-            if (session.UserId == packet.PlayerId) return;
+            if (session.UserId == packet.UserId) return;
             session.Send(packet);
         }
     }

@@ -15,5 +15,5 @@ public class S_FixedPick : PacketBase
     public Team Team { get; set; }
     
     [Key(3)]
-    public int PlayerId { get; set; }
+    public int UserId { get; set; }
 }

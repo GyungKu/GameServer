@@ -10,7 +10,7 @@ public class PacketHandler
         Console.WriteLine($"[PacketHandler] {packet.GetType().Name}");
         switch (packet)
         {
-            case AuthRequestPacket auth:
+            case C_Auth auth:
                 await HandleAuth(session, auth);
                 break;
             
@@ -22,7 +22,7 @@ public class PacketHandler
                 await HandleChat(session, chat);
                 break;
             
-            case MatchRequestPacket match:
+            case C_Match match:
                 await HandleMatchRequest(session, match);
                 break;
             
@@ -36,7 +36,7 @@ public class PacketHandler
         }
     }
     
-    private static async Task HandleAuth(ClientSession session, AuthRequestPacket packet)
+    private static async Task HandleAuth(ClientSession session, C_Auth packet)
     {
         // int userId = DummyTokenStore.GetUserIdFromToken(packet.Token);
         int userId = packet.UserId;
@@ -61,7 +61,7 @@ public class PacketHandler
         return session.SendAsync(response);
     }
 
-    private static async Task HandleMatchRequest(ClientSession session, MatchRequestPacket packet)
+    private static async Task HandleMatchRequest(ClientSession session, C_Match packet)
     {
         Console.WriteLine($"[매칭요청] userId: {session.UserId}, mode: {packet.Mode}");
         
@@ -75,7 +75,7 @@ public class PacketHandler
     {
         Console.WriteLine($"[픽 요청] userId: {session.UserId}, character: {packet.CharacterId}");
         
-        GameRoomManager.Instance.Pick(session, packet.CharacterId, packet.RoomId, packet.PlayerId);
+        GameRoomManager.Instance.Pick(session, packet.CharacterId, packet.GameRoomId, packet.UserId);
     }
 
     private static async Task HandleMatchAccept(ClientSession session, C_MatchAccept packet)
@@ -88,13 +88,13 @@ public class PacketHandler
     {
         Console.WriteLine($"클라이언트 채팅시도 userId: {session.UserId}");
         var response = new S_Response { Success = false };
-        if (session.UserId != packet.userId)
+        if (session.UserId != packet.UserId)
         {
             await session.SendAsync(response);
             return;
         }
         response.Success = true;
-        SessionManager.Instance.Broadcast(packet.userId, packet.chat);
+        SessionManager.Instance.Broadcast(packet.UserId, packet.Chat);
         await session.SendAsync(response);
         
     }

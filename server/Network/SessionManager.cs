@@ -34,7 +34,7 @@ public class SessionManager
         foreach (var session in _sessions.Values)
         {
             if (session.UserId == userId) return;
-            var req = new C_Chat {userId = userId, chat = chat};
+            var req = new C_Chat {UserId = userId, Chat = chat};
             lock (_lock)
             {
                 session.Send(req);
